@@ -7,6 +7,11 @@
  *  - o titulo nao pode conter apenas espacos;
  *  - o titulo deve possuir no minimo 5 caracteres;
  *  - o titulo deve possuir no maximo 100 caracteres.
+ *
+ * >>> VERSAO SEM AS VALIDACOES (para demonstrar o caso de FALHA no CI) <<<
+ * As regras abaixo estao comentadas de proposito: sem elas os testes
+ * falham e o GitHub Actions fica vermelho. Depois de tirar o print da
+ * falha, basta descomentar o bloco para o pipeline voltar a ficar verde.
  */
 
 export const TITULO_MIN = 5;
@@ -19,38 +24,37 @@ export interface ResultadoValidacao {
 
 /**
  * Valida o titulo de um chamado e retorna o resultado detalhado.
- * A contagem de caracteres considera o titulo sem espacos nas pontas (trim),
- * garantindo que espacos em branco nao sejam usados para burlar o minimo.
  */
 export function validarTitulo(titulo: unknown): ResultadoValidacao {
-  // titulo nao pode ser vazio / nulo / de tipo invalido
-  if (typeof titulo !== 'string' || titulo.length === 0) {
-    return { valido: false, erro: 'O titulo nao pode ser vazio.' };
-  }
+  // ---------------------------------------------------------------------
+  // VALIDACOES DESATIVADAS (caso de FALHA). Descomente para corrigir:
+  //
+  // if (typeof titulo !== 'string' || titulo.length === 0) {
+  //   return { valido: false, erro: 'O titulo nao pode ser vazio.' };
+  // }
+  //
+  // const tituloTratado = titulo.trim();
+  //
+  // if (tituloTratado.length === 0) {
+  //   return { valido: false, erro: 'O titulo nao pode conter apenas espacos.' };
+  // }
+  //
+  // if (tituloTratado.length < TITULO_MIN) {
+  //   return {
+  //     valido: false,
+  //     erro: `O titulo deve possuir no minimo ${TITULO_MIN} caracteres.`,
+  //   };
+  // }
+  //
+  // if (tituloTratado.length > TITULO_MAX) {
+  //   return {
+  //     valido: false,
+  //     erro: `O titulo deve possuir no maximo ${TITULO_MAX} caracteres.`,
+  //   };
+  // }
+  // ---------------------------------------------------------------------
 
-  const tituloTratado = titulo.trim();
-
-  // titulo nao pode conter apenas espacos
-  if (tituloTratado.length === 0) {
-    return { valido: false, erro: 'O titulo nao pode conter apenas espacos.' };
-  }
-
-  // titulo deve possuir no minimo 5 caracteres
-  if (tituloTratado.length < TITULO_MIN) {
-    return {
-      valido: false,
-      erro: `O titulo deve possuir no minimo ${TITULO_MIN} caracteres.`,
-    };
-  }
-
-  // titulo deve possuir no maximo 100 caracteres
-  if (tituloTratado.length > TITULO_MAX) {
-    return {
-      valido: false,
-      erro: `O titulo deve possuir no maximo ${TITULO_MAX} caracteres.`,
-    };
-  }
-
+  // Sem validacao: aceita qualquer titulo.
   return { valido: true };
 }
 
